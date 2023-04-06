@@ -44,9 +44,7 @@ app.post('/register',async(req,res)=>{
                 firstName:user.firstName,
                 lastName:user.lastName,
                 email:user.email.toLowerCase(),
-                passWord:user.passWord
-
-
+                passWord:user.passWord          
             })
              await dbUser.save()
             res.send({messge:"done"})
@@ -54,6 +52,7 @@ app.post('/register',async(req,res)=>{
     }
 
 })
+
 
 
 
@@ -78,7 +77,6 @@ app.post('/login', async(req,res)=>{
      if(!validPassword){
         res.send({msg:"Invalid password"})
      }
-     let userDataObject=userData.toObject()
      delete userDataObject.passWord
        const token = generateAuthToken(userData)
        res.status(200).send({                           
@@ -152,8 +150,6 @@ app.get('/restaurants', (req, res) => {
       res.status(400).json({ error: error.message });
     });
   });
-
-
     // List all products for a restaurant
 app.get('/restaurants/:restaurantId/products', (req, res) => {
   const { restaurantId } = req.params;
@@ -171,11 +167,6 @@ app.get('/restaurants/:restaurantId/products', (req, res) => {
     res.status(400).json({ error: error.message });
   });
 });
-
-     
-
-
-
 // Search for restaurants by name or city
 app.get('/restaurants/search', (req, res) => {
 console.log(req.query,"bodyyyyyyyyyyyyyy")
@@ -197,24 +188,17 @@ console.log(req.query,"bodyyyyyyyyyyyyyy")
     res.status(400).json({ error: error.message });
   });
 });
-
-
 //   List of restaurant by id
 app.get('/restaurants/:id', async(req,res)=>{
     const {id}=req.params
-    
     Restaurant.findById(id).populate('products').then((resId)=>{
        if(!resId){
         console.log(res,'resssssssssss')
       return res.status(404).json({ error: 'Restaurant not found' });
-
        }
        res.json(resId)
-
     }).catch((err)=>{
         res.status(400).json({ err: err.message });
-
-
     })
 
 })
@@ -258,3 +242,5 @@ app.listen(3035,()=>{
     console.log('server running on port no 3035')
 
 })
+
+
